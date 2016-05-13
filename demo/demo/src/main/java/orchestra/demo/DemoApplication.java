@@ -1,13 +1,13 @@
 package orchestra.demo;
 
 import orchestra.demo.books.proxy.UseBookService;
-import orchestra.instrument.Instrument;
+import orchestra.instrument.port.UseFreePort;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @UseBookService
-@Instrument
+@UseFreePort
 public class DemoApplication {
 
     public static void main(String[] args) {
