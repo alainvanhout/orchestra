@@ -1,6 +1,6 @@
-package orchestra.conductor.books.app;
+package orchestra.demo.books.app;
 
-import orchestra.conductor.books.api.Book;
+import orchestra.demo.books.api.Book;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;

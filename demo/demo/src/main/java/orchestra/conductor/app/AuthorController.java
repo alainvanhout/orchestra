@@ -1,7 +1,7 @@
 package orchestra.conductor.app;
 
-import orchestra.conductor.books.api.Book;
-import orchestra.conductor.books.api.BookService;
+import orchestra.demo.books.api.Book;
+import orchestra.demo.books.api.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

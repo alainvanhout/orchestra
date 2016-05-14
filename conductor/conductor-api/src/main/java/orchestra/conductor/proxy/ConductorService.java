@@ -1,4 +1,4 @@
-package orchestra.conductor.api;
+package orchestra.conductor.proxy;
 
 import ochestra.proxying.RequestService;
 import orchestra.instrument.identity.Identity;

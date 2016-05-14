@@ -1,7 +1,7 @@
 package orchestra.conductor.books;
 
 import ochestra.proxying.EnableProxies;
-import orchestra.conductor.api.IsConducted;
+import orchestra.conductor.proxy.IsConducted;
 import orchestra.instrument.Instrument;
 import orchestra.instrument.identity.Identity;
 import orchestra.instrument.identity.IdentityProvider;

@@ -1,4 +1,4 @@
-package orchestra.conductor.books.api;
+package orchestra.demo.books.api;
 
 public class Book {
     private String title;

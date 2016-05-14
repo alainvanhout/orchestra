@@ -1,4 +1,4 @@
-package orchestra.conductor.api;
+package orchestra.conductor.proxy;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

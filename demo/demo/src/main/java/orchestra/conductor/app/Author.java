@@ -1,6 +1,6 @@
 package orchestra.conductor.app;
 
-import orchestra.conductor.books.api.Book;
+import orchestra.demo.books.api.Book;
 
 import java.util.ArrayList;
 import java.util.List;

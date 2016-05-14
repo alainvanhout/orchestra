@@ -1,8 +1,8 @@
 package orchestra.conductor.books.proxy;
 
 import ochestra.proxying.RequestService;
-import orchestra.conductor.books.api.Book;
-import orchestra.conductor.books.api.BookService;
+import orchestra.demo.books.api.Book;
+import orchestra.demo.books.api.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
