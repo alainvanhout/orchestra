@@ -1,6 +1,6 @@
 package orchestra.conductor.books.proxy;
 
-import orchestra.demo.books.api.BookService;
+import orchestra.demo.books.api.BooksService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class UseBookConfiguration {
 
     @Bean
-    public BookService bookService(){
-        return new BookServiceProxy();
+    public BooksService booksService(){
+        return new BooksServiceProxy();
     }
 }

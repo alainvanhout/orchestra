@@ -1,6 +1,6 @@
 package orchestra.conductor.proxy;
 
-import ochestra.proxying.RequestService;
+import ochestra.proxying.request.RequestService;
 import orchestra.instrument.identity.ServiceIdentity;
 import orchestra.instrument.identity.IdentityProvider;
 import org.apache.commons.lang3.StringUtils;
@@ -49,13 +49,9 @@ public class ConductorService {
         discoverConductors();
 
         for (ServiceIdentity conductor : conductors) {
-            String url = getUrl(conductor);
+            String url = toUrl(conductor);
             requestService.perform(url + "/register", "POST", self);
         }
-    }
-
-    private String getUrl(ServiceIdentity identity) {
-        return "http://" + identity.getHost() + ":" + identity.getPort() + identity.getPath();
     }
 
     private void discoverConductors() {
@@ -78,6 +74,22 @@ public class ConductorService {
             return requestService.retrieve(url + "/meta/conductor/requisition", "POST", example, ServiceIdentity.class);
         }
         return null;
+    }
+
+    public String requisitionUrl(String service){
+        return requisitionUrl(service, null);
+    }
+
+    public String requisitionUrl(String service, String version){
+        return requisitionUrl(new ServiceIdentity().service(service).version(version));
+    }
+
+    public String requisitionUrl(ServiceIdentity example){
+        return toUrl(requisition(example));
+    }
+
+    private String toUrl(ServiceIdentity identity) {
+        return "http://" + identity.getHost() + ":" + identity.getPort() + identity.getPath();
     }
 
     private boolean isConductor(ServiceIdentity identity) {

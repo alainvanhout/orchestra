@@ -2,7 +2,11 @@ package orchestra.demo.books.api;
 
 import orchestra.demo.books.api.Book;
 
-public interface BookService {
+import java.util.List;
+
+public interface BooksService {
 
     Book findOne(String id);
+
+    List<Book> findAll();
 }
