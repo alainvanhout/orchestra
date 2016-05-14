@@ -13,14 +13,6 @@ import org.springframework.context.annotation.Bean;
 @HasIdentity
 public class ConductorApplication {
 
-    @Bean
-    public IdentityProvider identityService() {
-        return new IdentityProvider(new Identity()
-                .service("conductor")
-                .version("0.0.1")
-                .randomId());
-    }
-
     public static void main(String[] args) {
         SpringApplication.run(ConductorApplication.class, args);
     }

@@ -10,11 +10,12 @@ import org.springframework.beans.factory.annotation.Value;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.Collection;
 
 public class ConductorService {
 
     @Autowired
-    private IdentityProvider identityProvider;
+    private Collection<IdentityProvider> identityProviders;
 
     @Autowired
     private RequestService requestService;
@@ -31,15 +32,26 @@ public class ConductorService {
     }
 
     public void register() {
+        for (IdentityProvider identityProvider : identityProviders) {
+            register(identityProvider.get());
+        }
+    }
 
+    private void register(Identity self) {
         for (int port = portMin; port <= portMax; ++port) {
             if (inUse(port)) {
-                Identity identity = requestService.retrieve("http://localhost:" + port + "/meta/identity", "GET", Identity.class);
-                if (identity != null && StringUtils.equals(identity.getService(), "conductor")) {
-                    identity = identity;
+                String url = "http://localhost:" + port;
+                Identity identity = requestService.retrieve(url + "/meta/identity", "GET", Identity.class);
+                // only register to conductors (and not to myself)
+                if (identity != null && isConductor(identity) && !StringUtils.equals(identity.getId(), self.getId()) ) {
+                    requestService.perform(url + "/meta/conductor/register", "POST", self);
                 }
             }
         }
+    }
+
+    private boolean isConductor(Identity identity) {
+        return StringUtils.equals(identity.getService(), "conductor");
     }
 
     private boolean inUse(int port) {

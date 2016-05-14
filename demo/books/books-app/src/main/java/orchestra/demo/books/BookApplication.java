@@ -1,4 +1,4 @@
-package orchestra.conductor.books;
+package orchestra.demo.books;
 
 import ochestra.proxying.EnableProxies;
 import orchestra.conductor.proxy.IsConducted;
@@ -14,14 +14,6 @@ import org.springframework.context.annotation.Bean;
 @IsConducted
 @EnableProxies
 public class BookApplication {
-
-    @Bean
-    public IdentityProvider identityService() {
-        return new IdentityProvider(new Identity()
-                .service("books")
-                .version("0.0.1")
-                .randomId());
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(BookApplication.class, args);

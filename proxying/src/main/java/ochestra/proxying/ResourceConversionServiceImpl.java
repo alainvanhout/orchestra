@@ -15,4 +15,11 @@ public class ResourceConversionServiceImpl implements ResourceConversionService 
         return (T)gson.fromJson(body, clazz);
     }
 
+    @Override
+    public String toJson(Object body) {
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+        return gson.toJson(body);
+    }
+
 }
