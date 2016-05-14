@@ -6,8 +6,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/books")
-public class BookController {
+@RequestMapping(BooksController.PATH)
+public class BooksController {
+
+    public static final String PATH = "/books";
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     private Book getBook(){

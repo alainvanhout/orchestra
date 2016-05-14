@@ -1,7 +1,7 @@
 package orchestra.conductor.proxy;
 
 import ochestra.proxying.RequestService;
-import orchestra.instrument.identity.Identity;
+import orchestra.instrument.identity.ServiceIdentity;
 import orchestra.instrument.identity.IdentityProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,20 +37,20 @@ public class ConductorService {
         }
     }
 
-    private void register(Identity self) {
+    private void register(ServiceIdentity self) {
         for (int port = portMin; port <= portMax; ++port) {
             if (inUse(port)) {
                 String url = "http://localhost:" + port;
-                Identity identity = requestService.retrieve(url + "/meta/identity", "GET", Identity.class);
+                ServiceIdentity identity = requestService.retrieve(url + "/meta/identity", "GET", ServiceIdentity.class);
                 // only register to conductors (and not to myself)
-                if (identity != null && isConductor(identity) && !StringUtils.equals(identity.getId(), self.getId()) ) {
+                if (identity != null && isConductor(identity) && !self.equals(identity)) {
                     requestService.perform(url + "/meta/conductor/register", "POST", self);
                 }
             }
         }
     }
 
-    private boolean isConductor(Identity identity) {
+    private boolean isConductor(ServiceIdentity identity) {
         return StringUtils.equals(identity.getService(), "conductor");
     }
 

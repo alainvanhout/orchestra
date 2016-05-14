@@ -2,10 +2,10 @@ package orchestra.instrument.identity;
 
 public class SimpleIdentityProvider implements IdentityProvider {
 
-    protected Identity identity;
+    protected ServiceIdentity identity;
 
     @Override
-    public Identity get(){
+    public ServiceIdentity get(){
         return identity;
     }
 }

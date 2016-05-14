@@ -13,7 +13,7 @@ public class IdentityController {
     private IdentityProvider identityProvider;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    private Identity getIdentity() {
+    private ServiceIdentity getIdentity() {
         return identityProvider.get();
     }
 }
