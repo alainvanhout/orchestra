@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import(ConductorConfiguration.class)
-public @interface IsConducted {
+@Import(UseConductorsConfiguration.class)
+public @interface UseConductors {
 }

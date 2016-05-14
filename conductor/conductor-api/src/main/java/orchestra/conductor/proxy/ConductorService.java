@@ -32,11 +32,13 @@ public class ConductorService {
 
     @PostConstruct
     private void init() {
+        discoverConductors();
         register();
     }
 
     public void register() {
         if (identityProviders != null) {
+            // register each service identity that resides in this application instance
             for (IdentityProvider identityProvider : identityProviders) {
                 register(identityProvider.get());
             }
@@ -44,14 +46,26 @@ public class ConductorService {
     }
 
     private void register(ServiceIdentity self) {
+        discoverConductors();
+
+        for (ServiceIdentity conductor : conductors) {
+            String url = getUrl(conductor);
+            requestService.perform(url + "/register", "POST", self);
+        }
+    }
+
+    private String getUrl(ServiceIdentity identity) {
+        return "http://" + identity.getHost() + ":" + identity.getPort() + identity.getPath();
+    }
+
+    private void discoverConductors() {
         for (int port = portMin; port <= portMax; ++port) {
             if (inUse(port)) {
                 String url = "http://localhost:" + port;
                 ServiceIdentity identity = requestService.retrieve(url + "/meta/identity", "GET", ServiceIdentity.class);
-                // only register to conductors (and not to myself)
-                if (identity != null && isConductor(identity) && !self.equals(identity)) {
-                    requestService.perform(url + "/meta/conductor/register", "POST", self);
-                    conductors.add(identity);
+                // only register to conductors
+                if (identity != null && isConductor(identity)) {
+                  conductors.add(identity);
                 }
             }
         }
