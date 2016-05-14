@@ -47,4 +47,9 @@ public class RequestServiceImpl implements RequestService {
     public <T> T retrieve(String url, String method, Class<T> clazz) {
         return resourceConversionService.toResource(perform(url, method), clazz);
     }
+
+    @Override
+    public <T> T retrieve(String url, String method, Object body, Class<T> clazz) {
+        return resourceConversionService.toResource(perform(url, method, body), clazz);
+    }
 }

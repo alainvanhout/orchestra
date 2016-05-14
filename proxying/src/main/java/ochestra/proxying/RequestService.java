@@ -7,4 +7,6 @@ public interface RequestService {
     String perform(String url, String method, Object body);
 
     <T> T retrieve(String url, String method, Class<T> clazz);
+
+    <T> T retrieve(String url, String method, Object body, Class<T> clazz);
 }

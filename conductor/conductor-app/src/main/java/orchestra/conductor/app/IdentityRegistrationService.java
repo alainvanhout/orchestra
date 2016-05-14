@@ -1,6 +1,7 @@
 package orchestra.conductor.app;
 
 import orchestra.instrument.identity.ServiceIdentity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -10,6 +11,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class IdentityRegistrationService {
+
+    @Autowired
+    private ConductorIdentityProvider conductorIdentityProvider;
 
     private Set<ServiceIdentity> identities = ConcurrentHashMap.newKeySet();
 
@@ -26,5 +30,8 @@ public class IdentityRegistrationService {
                     return (example.getService() == null || example.getService().equals(i.getService()))
                             && (example.getVersion() == null || example.getVersion().equals(i.getVersion()));
                 }).collect(Collectors.toList());
+    }
+    public ServiceIdentity getOneByExample(ServiceIdentity example) {
+        return getByExample(example).stream().findFirst().orElse(null);
     }
 }

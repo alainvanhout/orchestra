@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/authors")
+@RequestMapping(AuthorController.PATH)
 public class AuthorController {
 
+    public static final String PATH = "/authors";
     @Autowired
     private BookService bookService;
 

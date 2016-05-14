@@ -21,7 +21,7 @@ public class FreePortConfiguration {
     @Value("${orchestra.instrument.port.max:10000}")
     private int portMax;
 
-    @Autowired
+    @Autowired(required = false)
     private Collection<IdentityProvider> identityProviders;
 
     @Bean
@@ -32,8 +32,10 @@ public class FreePortConfiguration {
             throw new IllegalStateException("Could not find a free port");
         }
 
-        for (IdentityProvider identityProvider : identityProviders) {
-            identityProvider.get().port(port);
+        if (identityProviders != null) {
+            for (IdentityProvider identityProvider : identityProviders) {
+                identityProvider.get().port(port);
+            }
         }
 
         return (container -> container.setPort(port));

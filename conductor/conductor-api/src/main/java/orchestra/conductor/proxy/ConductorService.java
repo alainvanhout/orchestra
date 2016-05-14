@@ -10,11 +10,13 @@ import org.springframework.beans.factory.annotation.Value;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class ConductorService {
 
-    @Autowired
+    @Autowired(required = false)
     private Collection<IdentityProvider> identityProviders;
 
     @Autowired
@@ -26,14 +28,18 @@ public class ConductorService {
     @Value("${orchestra.conductor.port.max:10000}")
     private int portMax;
 
+    private List<ServiceIdentity> conductors = new ArrayList<>();
+
     @PostConstruct
     private void init() {
         register();
     }
 
     public void register() {
-        for (IdentityProvider identityProvider : identityProviders) {
-            register(identityProvider.get());
+        if (identityProviders != null) {
+            for (IdentityProvider identityProvider : identityProviders) {
+                register(identityProvider.get());
+            }
         }
     }
 
@@ -45,9 +51,19 @@ public class ConductorService {
                 // only register to conductors (and not to myself)
                 if (identity != null && isConductor(identity) && !self.equals(identity)) {
                     requestService.perform(url + "/meta/conductor/register", "POST", self);
+                    conductors.add(identity);
                 }
             }
         }
+    }
+
+    public ServiceIdentity requisition(ServiceIdentity example){
+        if (conductors.size() > 0){
+            ServiceIdentity conductor = conductors.get(0);
+            String url = "http://" + conductor.getHost() + ":" + conductor.getPort();
+            return requestService.retrieve(url + "/meta/conductor/requisition", "POST", example, ServiceIdentity.class);
+        }
+        return null;
     }
 
     private boolean isConductor(ServiceIdentity identity) {

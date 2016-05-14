@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 
 @Component
-public class ConductorIdentityProvider extends SimpleIdentityProvider {
+public class AuthorIdentityProvider extends SimpleIdentityProvider {
 
     @PostConstruct
     private void init(){
         identity = new ServiceIdentity()
-                .service("conductor")
+                .service("authors")
                 .version("0.0.1")
-                .path(ConductorController.PATH)
+                .path(AuthorController.PATH)
                 .host(getLocalHost())
                 .randomId();
     }

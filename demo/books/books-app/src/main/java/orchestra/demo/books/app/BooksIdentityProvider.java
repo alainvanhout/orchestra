@@ -20,12 +20,4 @@ public class BooksIdentityProvider extends SimpleIdentityProvider {
                 .host(getLocalHost())
                 .randomId();
     }
-
-    private String getLocalHost() {
-        try {
-            return InetAddress.getLocalHost().getHostAddress();
-        } catch (UnknownHostException e) {
-            return null;
-        }
-    }
 }
