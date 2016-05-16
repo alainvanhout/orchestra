@@ -2,10 +2,10 @@ package orchestra.conductor.app;
 
 import orchestra.instrument.identity.ServiceIdentity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.tags.Param;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping(ConductorController.PATH)
@@ -29,5 +29,13 @@ public class ConductorController {
     private ServiceIdentity requisition(@RequestBody ServiceIdentity identity) {
         ServiceIdentity oneByExample = identityRegistrationService.getOneByExample(identity);
         return oneByExample;
+    }
+
+    @RequestMapping(value = "catalogue", method = RequestMethod.GET, produces = "application/json")
+    private Set<ServiceIdentity> catalogueJson(@RequestParam(defaultValue = "false") boolean build) {
+        if (build){
+            identityRegistrationService.buildCatalogue();
+        }
+        return identityRegistrationService.getCatalogue();
     }
 }

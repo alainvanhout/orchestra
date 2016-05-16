@@ -68,6 +68,9 @@ public class ConductorService {
     }
 
     public ServiceIdentity requisition(ServiceIdentity example){
+        if (conductors.size() == 0){
+            discoverConductors();
+        }
         if (conductors.size() > 0){
             ServiceIdentity conductor = conductors.get(0);
             String url = "http://" + conductor.getHost() + ":" + conductor.getPort();
