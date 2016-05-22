@@ -1,5 +1,6 @@
 package orchestra.conductor.app;
 
+import ochestra.proxying.discovery.DiscoveryService;
 import ochestra.proxying.request.RequestService;
 import orchestra.instrument.identity.ServiceIdentity;
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +30,9 @@ public class IdentityRegistrationService {
 
     @Autowired
     private RequestService requestService;
+
+    @Autowired
+    private DiscoveryService discoveryService;
 
     @Value("${orchestra.port.min:8080}")
     private int globalPortMin;
@@ -112,15 +116,9 @@ public class IdentityRegistrationService {
     }
 
     public void buildCatalogue() {
-        System.out.println("Building catalogue");
-        for (int port = globalPortMin; port <= globalPortMax; ++port) {
-            if (inUse(port)) {
-                ServiceIdentity identity = retrieveIdentityForPort(port);
-                if (identity != null) {
-                    register(identity);
-                }
-            }
-        }
+        discoveryService
+                .findAll(new ServiceIdentity(), globalPortMin, globalPortMax)
+                .stream().forEach(this::register);
     }
 
     private ServiceIdentity retrieveIdentityForPort(int port) {

@@ -1,5 +1,6 @@
 package orchestra.conductor.proxy;
 
+import ochestra.proxying.discovery.DiscoveryService;
 import ochestra.proxying.request.RequestService;
 import orchestra.instrument.identity.ServiceIdentity;
 import orchestra.instrument.identity.IdentityProvider;
@@ -21,6 +22,9 @@ public class ConductorService {
 
     @Autowired
     private RequestService requestService;
+
+    @Autowired
+    private DiscoveryService discoveryService;
 
     @Value("${orchestra.conductor.port.min:8080}")
     private int portMin;
@@ -55,16 +59,7 @@ public class ConductorService {
     }
 
     private void discoverConductors() {
-        for (int port = portMin; port <= portMax; ++port) {
-            if (inUse(port)) {
-                String url = "http://localhost:" + port;
-                ServiceIdentity identity = requestService.retrieve(url + "/meta/identity", "GET", ServiceIdentity.class);
-                // only register to conductors
-                if (identity != null && isConductor(identity)) {
-                  conductors.add(identity);
-                }
-            }
-        }
+        this.conductors.addAll(discoveryService.findAll(new ServiceIdentity().service("conductor"), portMin, portMax));
     }
 
     public ServiceIdentity requisition(ServiceIdentity example){
@@ -93,19 +88,5 @@ public class ConductorService {
 
     private String toUrl(ServiceIdentity identity) {
         return "http://" + identity.getHost() + ":" + identity.getPort() + identity.getPath();
-    }
-
-    private boolean isConductor(ServiceIdentity identity) {
-        return StringUtils.equals(identity.getService(), "conductor");
-    }
-
-    private boolean inUse(int port) {
-        try {
-            ServerSocket socket = new ServerSocket(port);
-            socket.close();
-            return false;
-        } catch (IOException ex) {
-            return true;
-        }
     }
 }
